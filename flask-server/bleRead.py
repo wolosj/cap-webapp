@@ -26,9 +26,12 @@ async def print_heart_rate():
         heart_rate = int.from_bytes(heart_rate_data, byteorder="little")
         blood_pressure = int.from_bytes(blood_pressure_data, byteorder="little")
         # Print the heart rate
-        print(f"Heart rate: {heart_rate}, Blood Pressure: {blood_pressure}" )
+        # print(f"Heart rate: {heart_rate}, Blood Pressure: {blood_pressure}" )
+        return {"readings": [f"{heart_rate}", f"{blood_pressure}"]}
 
 
-while True:    
+
+if __name__ == "__main__":
+    while True:    
 # Call the print_heart_rate function
-    asyncio.run(print_heart_rate())
+        print(asyncio.run(print_heart_rate()))
