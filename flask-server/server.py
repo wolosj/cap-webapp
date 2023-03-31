@@ -1,7 +1,7 @@
 from flask import Flask
 import asyncio
 import bleRead
-
+import random
 
 
 app = Flask(__name__)
@@ -14,7 +14,9 @@ def members():
     if vals:
         return vals
     else:
-        return {"readings": ["13", "67", "90"]}
+        
+        
+        return {"readings": [f"{random.randint(1,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}"]}
 
 
 if __name__ == "__main__":

@@ -34,4 +34,4 @@ async def print_heart_rate():
 if __name__ == "__main__":
     while True:    
 # Call the print_heart_rate function
-        print(asyncio.run(print_heart_rate()))
+        print(asyncio.run(print_heart_rate()))+
