@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 
+import {GrNotes} from 'react-icons/gr';
+
 const NotesCard = ({ onCertify }) => {
   const [notes, setNotes] = useState('');
   const [facilitatorName, setFacilitatorName] = useState('');
@@ -21,8 +23,11 @@ const NotesCard = ({ onCertify }) => {
   };
 
   return (
-    <Card style={{ width: '50%' }}>
-      <Card.Header>Notes</Card.Header>
+    <Card style={{ width: '33%' }}>
+      <Card.Header style={{ backgroundColor: '#f8caaa' }}>
+      <span style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign:'center' }}>Notes</span>
+      <GrNotes size={25}/>
+      </Card.Header>
       <Card.Body>
         <Form>
           <Form.Group controlId="notesInput">

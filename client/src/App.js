@@ -8,6 +8,8 @@ import ReadingsCard from './components/ReadingsCard';
 import NotesCard from './components/NotesCard';
 import CustomNavbar from './components/CustomNavbar';
 import CandidateInfoCard from './components/CandidateInfoCard';
+import DataCard from './components/DataCard';
+
 
 
 function App() {
@@ -34,8 +36,8 @@ function App() {
   return (
     <div>
       <Modal show={showModal} onHide={() => setShowModal(false)} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>Please Enter Your Information</Modal.Title>
+        <Modal.Header>
+          <Modal.Title>Please Enter Candidate Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleUserInfoSubmit}>
@@ -54,17 +56,20 @@ function App() {
         </Modal.Body>
       </Modal>
       <CustomNavbar showModal={() => setShowModal(true)} />
-      
-      <Button onClick={handleButtonClick}>Check for Results</Button>
-      
+      <div>
+
+        <CandidateInfoCard name={userInfo.name} dob={userInfo.dob} handleButtonClick={handleButtonClick} />
+      </div>
+
       {data.readings.length === 0 ? (
         <p>No readings yet</p>
       ) : (
         <div>
-        <div><CandidateInfoCard name={userInfo.name} dob={userInfo.dob} /></div>
+        
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
            
           <ReadingsCard readings={data.readings} />
+          <DataCard moreData={data.readings} />
           <NotesCard results={data.readings} />
         </div>
         </div>

@@ -1,26 +1,26 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { FaCog } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 
 const CustomNavbar = ({ showModal }) => {
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar style={{ backgroundColor: '#f8caaa' }}>
       <Container fluid>
         <Navbar.Brand>
           <img
-            src="https://dummyimage.com/50x50/000/fff"
-            width="30"
-            height="30"
+            src="/logo.png"
+            width="75"
+            height="70"
             className="d-inline-block align-top"
             alt="Logo"
           />
         </Navbar.Brand>
-        <Nav className="mx-auto">
-          <Navbar.Text>Smart CPR Student Dashboard</Navbar.Text>
+        <Nav className="mx-auto" >
+          <Navbar.Text style={{ color:'black',fontSize: '36px', marginRight: '32px', fontWeight: 'bold', textAlign: 'center'}}>Smart CPR Student Dashboard</Navbar.Text>
         </Nav>
         <Nav>
           <Nav.Link onClick={showModal}>
-            <FaCog />
+            <FaEdit size={40}/>
           </Nav.Link>
         </Nav>
       </Container>
