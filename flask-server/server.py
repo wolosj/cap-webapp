@@ -16,7 +16,7 @@ def members():
     else:
         
         
-        return {"readings": [f"{random.randint(81,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}"]}
+        return {"readings": [f"{random.randint(81,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}", f"{random.randint(81,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}", f"{random.randint(81,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}", f"{random.randint(100,200)}"]}
 
 @app.route("/records")
 async def records():

@@ -8,6 +8,8 @@ import MoreDataCard from './MoreDataCard';
 const DataCard = ({moreData}) => {
 
 
+    const depthData = moreData.slice(3, 6);
+    const rateData = moreData.slice(6, 9);
 
 
   return (
@@ -19,8 +21,8 @@ const DataCard = ({moreData}) => {
         
       </Card.Header>
       <ListGroup variant="flush" style={{ flex: 1 }}>
-        <MoreDataCard text='Compression Depth' moreData={moreData} unit='mm' />
-        <MoreDataCard text='Compression Rate' moreData={moreData} unit='bpm' />
+        <MoreDataCard text='Compression Depth' moreData={depthData} unit='mm' />
+        <MoreDataCard text='Compression Rate' moreData={rateData} unit='bpm' />
       </ListGroup>
     </Card>
   );

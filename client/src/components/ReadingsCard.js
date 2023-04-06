@@ -7,6 +7,12 @@ import ProgressCard from './ProgressCard';
 
 const ReadingsCard = ({readings}) => {
 
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
 
   return (
     <Card style={{ width: '33%', display: 'flex' }}>
@@ -22,7 +28,7 @@ const ReadingsCard = ({readings}) => {
             <span style={{  fontSize: '1.25rem' }}>Hands On Time</span>
           </div>
             <div style={{ flex: '0 0 70%', display: 'flex', alignItems: 'center', paddingRight: '10px' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>00:02:12</span>
+            <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>{formatTime(readings[9])}</span>
             </div>
         </Card>
         <ProgressCard progress={readings[0]} text='Correct Depth' />
