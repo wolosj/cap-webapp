@@ -19,9 +19,8 @@ const DataCard = ({moreData}) => {
         
       </Card.Header>
       <ListGroup variant="flush" style={{ flex: 1 }}>
-        <MoreDataCard text='Compression Depth' moreData={moreData} />
-        <MoreDataCard text='Compression Rate' moreData={moreData} />
-        <MoreDataCard text='Recoil' moreData={moreData} />
+        <MoreDataCard text='Compression Depth' moreData={moreData} unit='mm' />
+        <MoreDataCard text='Compression Rate' moreData={moreData} unit='bpm' />
       </ListGroup>
     </Card>
   );

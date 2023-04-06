@@ -2,7 +2,7 @@ from flask import Flask
 import asyncio
 import bleRead
 import random
-
+import dbRead
 
 app = Flask(__name__)
 
@@ -16,7 +16,17 @@ def members():
     else:
         
         
-        return {"readings": [f"{random.randint(1,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}"]}
+        return {"readings": [f"{random.randint(81,100)}", f"{random.randint(1,100)}", f"{random.randint(1,100)}"]}
+
+@app.route("/records")
+async def records():
+    db = await dbRead.read_csv_async('certificationData.csv')
+    if db:
+        return db
+    else:
+        return "No records found"
+
+
 
 
 if __name__ == "__main__":
