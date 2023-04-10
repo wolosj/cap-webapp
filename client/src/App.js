@@ -10,10 +10,8 @@ import CustomNavbar from './components/CustomNavbar';
 import CandidateInfoCard from './components/CandidateInfoCard';
 import DataCard from './components/DataCard';
 
-
-
 function App() {
-  const [data, setData] = useState({readings: []});
+  const [data, setData] = useState({ readings: [], records: [] });
   const [userInfo, setUserInfo] = useState({ name: '', dob: '' });
   const [showModal, setShowModal] = useState(true);
 
@@ -22,11 +20,28 @@ function App() {
       res => res.json()
     ).then(
       data => {
-        setData(data);
+        setData({ ...data, readings: data.readings });
         console.log(data);
       }
     );
   };
+
+  const handleGetRecordsButtonClick = () => {
+    fetch("/records")
+      .then(res => res.json())
+      .then(data => {
+        if (data.records.length === 0) {
+          console.log("No records found.");
+          console.log(data.records);
+        } else {
+          setData({ ...data, records: data.records });
+          console.log(data.records);
+        }
+      })
+      .catch(error => console.log("Error fetching records:", error));
+  };
+  
+  
 
   const handleUserInfoSubmit = (event) => {
     event.preventDefault();
@@ -57,21 +72,18 @@ function App() {
       </Modal>
       <CustomNavbar showModal={() => setShowModal(true)} />
       <div>
-
         <CandidateInfoCard name={userInfo.name} dob={userInfo.dob} handleButtonClick={handleButtonClick} />
+        <Button onClick={handleGetRecordsButtonClick}/> 
       </div>
-
       {data.readings.length === 0 ? (
         <p>No readings yet</p>
       ) : (
         <div>
-        
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-           
-          <ReadingsCard readings={data.readings} />
-          <DataCard moreData={data.readings} />
-          <NotesCard results={data.readings} />
-        </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <ReadingsCard readings={data.readings} />
+            <DataCard moreData={data.readings} />
+            <NotesCard results={data.readings} />
+          </div>
         </div>
       )}
     </div>
