@@ -17,9 +17,9 @@ async def read_csv():
         reader = csv.DictReader(csvfile)
         for row in reader:
             data.append(row)
-    return json.dumps({"records": data})
+    return data
 
 if __name__ == "__main__":
     import asyncio
     csv_data = asyncio.run(read_csv())
-    print(csv_data)
+    print(type(csv_data))

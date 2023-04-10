@@ -35,7 +35,7 @@ function App() {
           console.log(data.records);
         } else {
           setData({ ...data, records: data.records });
-          console.log(data.records);
+          // console.log(data);
         }
       })
       .catch(error => console.log("Error fetching records:", error));
@@ -75,8 +75,8 @@ function App() {
         <CandidateInfoCard name={userInfo.name} dob={userInfo.dob} handleButtonClick={handleButtonClick} />
         <Button onClick={handleGetRecordsButtonClick}/> 
       </div>
-      {data.readings.length === 0 ? (
-        <p>No readings yet</p>
+      {(data.readings.length === 0 || data.readings[1] === "254" || data.readings[1] === "255" )? (
+        <p style={{ fontSize: '2rem', textAlign: 'center' }}>No readings yet</p>
       ) : (
         <div>
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
