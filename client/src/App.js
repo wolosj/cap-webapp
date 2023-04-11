@@ -9,11 +9,17 @@ import NotesCard from './components/NotesCard';
 import CustomNavbar from './components/CustomNavbar';
 import CandidateInfoCard from './components/CandidateInfoCard';
 import DataCard from './components/DataCard';
+import RecordsModal from './components/RecordsModal';
+
 
 function App() {
-  const [data, setData] = useState({ readings: [], records: [] });
-  const [userInfo, setUserInfo] = useState({ name: '', dob: '' });
+  const [data, setData] = useState({ readings: []});
+  const [userInfo, setUserInfo] = useState({ name: '', dob: '', sessionId: '', date: '' });
+
   const [showModal, setShowModal] = useState(true);
+  const [showRecordsModal, setShowRecordsModal] = useState(false);
+  const [records, setRecords] = useState([]);
+  const [formData, setFormData] = useState({ notes: '', facilitatorName: '', certification: false });
 
   const handleButtonClick = () => {
     fetch("/members").then(
@@ -25,28 +31,61 @@ function App() {
       }
     );
   };
-
-  const handleGetRecordsButtonClick = () => {
-    fetch("/records")
-      .then(res => res.json())
-      .then(data => {
-        if (data.records.length === 0) {
-          console.log("No records found.");
-          console.log(data.records);
-        } else {
-          setData({ ...data, records: data.records });
-          // console.log(data);
-        }
-      })
-      .catch(error => console.log("Error fetching records:", error));
+  const handleCertify = (data) => {
+    setFormData({
+      ...formData,
+      notes: data.notes,
+      facilitatorName: data.facilitatorName,
+      certification: data.certification
+    });
+    
+    fetch('/certify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data: data, userInfo: userInfo })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Certification response:', data);
+    })
+    .catch(error => {
+      console.error('Error certifying:', error);
+    });
   };
   
-  
 
-  const handleUserInfoSubmit = (event) => {
-    event.preventDefault();
+  const handleGetRecordsButtonClick = () => {
+    fetch('/records')
+      .then((res) => res.json())
+      .then((records) => {
+        if (Array.isArray(records) && records.length > 0) {
+          setRecords(records);
+          console.log(records);
+          setShowRecordsModal(!showRecordsModal);
+        } else {
+          console.log('No records found.');
+          console.log(records);
+        }
+      })
+      .catch((error) => console.log('Error fetching records:', error));
+  };
+  const handleRecordsModalClose = () => {
+    setShowRecordsModal(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const sessionId = `${userInfo.name}${userInfo.dob}`.split('').reduce((acc, curr) => acc + curr.charCodeAt(0), 0).toString(16);
+    const date = new Date();
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    setUserInfo({...userInfo, sessionId: sessionId, date: formattedDate});
     setShowModal(false);
-  }
+  };
+
+
+  
 
   return (
     <div>
@@ -55,7 +94,7 @@ function App() {
           <Modal.Title>Please Enter Candidate Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleUserInfoSubmit}>
+          <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Name:</Form.Label>
               <Form.Control type="text" value={userInfo.name} onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })} required />
@@ -70,10 +109,13 @@ function App() {
           </Form>
         </Modal.Body>
       </Modal>
-      <CustomNavbar showModal={() => setShowModal(true)} />
+      <CustomNavbar showModal={() => setShowModal(true)} handleGetRecordsButtonClick={handleGetRecordsButtonClick} />
+      <RecordsModal show={showRecordsModal} onHide={handleRecordsModalClose} records={records} onClose={handleRecordsModalClose}/>
+
       <div>
-        <CandidateInfoCard name={userInfo.name} dob={userInfo.dob} handleButtonClick={handleButtonClick} />
-        <Button onClick={handleGetRecordsButtonClick}/> 
+        <CandidateInfoCard userInfo={userInfo} handleButtonClick={handleButtonClick} />
+
+
       </div>
       {(data.readings.length === 0 || data.readings[1] === "254" || data.readings[1] === "255" )? (
         <p style={{ fontSize: '2rem', textAlign: 'center' }}>No readings yet</p>
@@ -82,7 +124,7 @@ function App() {
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             <ReadingsCard readings={data.readings} />
             <DataCard moreData={data.readings} />
-            <NotesCard results={data.readings} />
+            <NotesCard onCertify={handleCertify} />
           </div>
         </div>
       )}

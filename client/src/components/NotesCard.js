@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
-
-import {GrNotes} from 'react-icons/gr';
+import { GrNotes } from 'react-icons/gr';
 
 const NotesCard = ({ onCertify }) => {
   const [notes, setNotes] = useState('');
   const [facilitatorName, setFacilitatorName] = useState('');
+  const [shouldCertify, setShouldCertify] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleNotesChange = (event) => {
     setNotes(event.target.value);
@@ -18,18 +19,41 @@ const NotesCard = ({ onCertify }) => {
   const handleCertifyClick = () => {
     onCertify({
       notes,
-      facilitatorName
+      facilitatorName,
+      shouldCertify,
     });
+    setFormSubmitted(true);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleCertifyClick();
+  };
+
+  const handleShouldCertifyChange = (event) => {
+    setShouldCertify(event.target.value === 'Yes');
+  };
+
+  useEffect(() => {
+    let timer;
+    if (formSubmitted) {
+      timer = setTimeout(() => {
+        setFormSubmitted(false);
+      }, 3000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [formSubmitted]);
 
   return (
     <Card style={{ width: '33%' }}>
       <Card.Header style={{ backgroundColor: '#f8caaa' }}>
-      <span style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign:'center' }}>Notes</span>
-      <GrNotes size={25}/>
+        <span style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>Notes</span>
+        <GrNotes size={25} />
       </Card.Header>
       <Card.Body>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group controlId="notesInput">
             <Form.Label>Notes</Form.Label>
             <Form.Control
@@ -49,6 +73,8 @@ const NotesCard = ({ onCertify }) => {
                 type="radio"
                 name="certification"
                 id="certification-yes"
+                value="Yes"
+                onChange={handleShouldCertifyChange}
               />
               <Form.Check
                 inline
@@ -56,6 +82,8 @@ const NotesCard = ({ onCertify }) => {
                 type="radio"
                 name="certification"
                 id="certification-no"
+                value="No"
+                onChange={handleShouldCertifyChange}
               />
             </div>
           </Form.Group>
@@ -73,7 +101,8 @@ const NotesCard = ({ onCertify }) => {
           </Form.Group>
 
           <Form.Group controlId="certifyButton">
-            <Button onClick={handleCertifyClick}>Certify</Button>
+            <Button type="submit">Certify</Button>
+            {formSubmitted && <span style={{ color: 'green', fontSize: '0.9rem' }}>Form Submitted</span>}
           </Form.Group>
         </Form>
       </Card.Body>

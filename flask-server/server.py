@@ -1,8 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import asyncio
 import bleRead
 import random
 import dbRead
+
 
 app = Flask(__name__)
 
@@ -20,12 +21,20 @@ def members():
 def records():
     csv_data = asyncio.run(dbRead.read_csv())
     if csv_data:
-       print("Goes here")
-       print(type(csv_data ))
-
-       return {"records": csv_data}
+       print(csv_data)
+       return jsonify(csv_data)
     else:
-        return {"records": []}
+        return jsonify([])
+
+@app.route('/certify', methods=['POST'])
+def certify():
+    
+    data = request.get_json()
+    
+    dbRead.write_csv(data)
+    print(data)
+    return jsonify(data)
+
 
 
 if __name__ == "__main__":

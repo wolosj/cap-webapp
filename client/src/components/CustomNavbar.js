@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaHistory } from 'react-icons/fa';
 
-const CustomNavbar = ({ showModal }) => {
+const CustomNavbar = ({ showModal, handleGetRecordsButtonClick }) => {
   return (
     <Navbar style={{ backgroundColor: '#f8caaa' }}>
       <Container fluid>
@@ -19,6 +19,9 @@ const CustomNavbar = ({ showModal }) => {
           <Navbar.Text style={{ color:'black',fontSize: '36px', marginRight: '32px', fontWeight: 'bold', textAlign: 'center'}}>Smart CPR Student Dashboard</Navbar.Text>
         </Nav>
         <Nav>
+          <Nav.Link onClick={handleGetRecordsButtonClick}>
+            <FaHistory size={40}/>
+          </Nav.Link>
           <Nav.Link onClick={showModal}>
             <FaEdit size={40}/>
           </Nav.Link>
